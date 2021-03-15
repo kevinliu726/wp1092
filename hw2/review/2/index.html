@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Image Viewer</title>
+        <link
+            rel="stylesheet"
+            type="text/css"
+            media="screen"
+            href="styles.css"
+        />
+    </head>
+    <body>
+        <!-- Try to implement an HTML that looks like the reference example:
+        ./images/screenshot.png  -->
+        <!-- Please use the class names and IDs as defined in styles.css
+         so that the outlook can be the same as the reference. -->
+         <div class="image-viewer__container">
+
+            <div class="image-viewer__title">
+                <span id="title">Image Viewr</span>
+                <span id="student__id">b06902111 資工四 林慶珠 
+                                        Web Programming HW#2</span>
+            </div>
+
+            <div class="image-viewer__main">
+                <div class="image-viewer__button">
+                    <img src="./images/back.png" id="previous"/>
+                </div>
+
+                <div class="image-viewer__display">
+                    <img id="display" src="https://miro.medium.com/max/2444/1*rUIKFy9CUQXuSIo-DnzGPw.png"/>
+
+                    <div class="image-viewer__display-source-wrapper">
+                        <span id="source">Image Source:
+                            <a id="img__link__text" 
+                                href="https://miro.medium.com/max/2444/1*rUIKFy9CUQXuSIo-DnzGPw.png">
+                                links to the source URL</a>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="image-viewer__button">
+                    <img src="./images/next.png" id="next"/>
+                </div>                
+            </div>
+         </div>
+        <script src="main.js"></script>
+    </body>
+</html>

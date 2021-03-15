@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Image Viewer</title>
+        <link
+            rel="stylesheet"
+            type="text/css"
+            media="screen"
+            href="styles.css"
+        />
+        <script type="text/javascript" src="main.js"></script>
+    </head>
+    <body>
+        <!-- Try to implement an HTML that looks like the reference example:
+        ./images/screenshot.png  -->
+        <!-- Please use the class names and IDs as defined in styles.css
+         so that the outlook can be the same as the reference. -->
+
+         <div class="image-viewer__container">
+             <div class="image-viewer__title">Image Viewer</div>
+             <div class="image-viewer__main">
+
+                 <div class="image-viewer__button">
+                    <a href="#" onclick="backimg();"><img src="./images/back.png" id="back" class="aaa" /></a>
+                 </div>
+
+                 <div class="image-viewer__display" id="displaybg">
+                     <img id="display" onload="loadingImg()"/>
+                     <div class="image-viewer__display-source-wrapper">
+                         <span>
+                         	Source:
+                            <a href="" id="name"> ass </a>
+                        <span>
+                     </div>
+                 </div>
+
+                 <div class="image-viewer__button">
+                     <!--<img src="./images/next.png" id="next" />-->
+
+                     <a href="#" onclick="nextimg();"><img src="./images/next.png" id="next" /></a>
+
+                 </div>
+
+
+             </div>
+
+         </div>
+
+         <script src="main.js"></script> 
+    </body>
+</html>
