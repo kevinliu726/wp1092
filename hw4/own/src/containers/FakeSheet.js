@@ -10,12 +10,14 @@ class FakeSheet extends Component {
         }
         this.onBottom = this.onBottom.bind(this)
         this.deBottom = this.deBottom.bind(this)
+        this.table = React.createRef();
     }
 
     onBottom(e,eventid){
         this.setState({
             bottom: eventid,
         })
+        this.table.current.handleButtonEvent(eventid)
     }
 
     deBottom(){
@@ -28,7 +30,7 @@ class FakeSheet extends Component {
         return (
             <>
                 <Header onBottom={this.onBottom}/>
-                <Table deBottom={this.deBottom} eventid={this.state.bottom}/>
+                <Table ref={this.table} deBottom={this.deBottom} eventid={this.state.bottom}/>
             </>
         );
     }
