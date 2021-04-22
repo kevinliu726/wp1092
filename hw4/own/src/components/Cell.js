@@ -25,10 +25,6 @@ export default class Cell extends Component{
         this.props.handleDelete(e, this.props.data.rowid, this.props.data.colid)
     }
 
-    handleBlur(e) {
-        this.props.handleBlur(e)
-    }
-
     render(){
         if(!this.props.data.editting){
             if(this.props.data.header){
@@ -40,26 +36,22 @@ export default class Cell extends Component{
             else{
                 if(this.props.data.value === 'none'){
                     if(!this.props.data.chosen){
-                        return <td tabIndex={this.props.id} onKeyPress={(e)=>this.handleOverWrite(e)} id={this.props.id}
-                                onBlur={(e)=>this.handleBlur(e)} onClick={(e)=>this.handleClick(e)} onDoubleClick={(e)=>this.handleDClick(e)}></td>
+                        return <td tabIndex={this.props.id} onKeyPress={(e)=>this.handleOverWrite(e)} id={this.props.id} onClick={(e)=>this.handleClick(e)} onDoubleClick={(e)=>this.handleDClick(e)}></td>
                     }
                     else{
                         return(
-                            <td className='chosen-box' tabIndex={this.props.id} onKeyPress={(e)=>this.handleOverWrite(e)}
-                            onBlur={(e)=>this.handleBlur(e)} onClick={(e)=>this.handleClick(e)} onDoubleClick={(e)=>this.handleDClick(e)} id={this.props.id}>   
+                            <td className='chosen-box' tabIndex={this.props.id} onKeyPress={(e)=>this.handleOverWrite(e)} onClick={(e)=>this.handleClick(e)} onDoubleClick={(e)=>this.handleDClick(e)} id={this.props.id}>   
                             </td>
                         )
                     }
                 }
                 else{
                     if(!this.props.data.chosen){
-                        return <td tabIndex={this.props.id} onClick={(e)=>this.handleClick(e)} onKeyPress={(e)=>this.handleOverWrite(e)}
-                        onBlur={(e)=>this.handleBlur(e)} onDoubleClick={(e)=>this.handleDClick(e)} id={this.props.id}>{this.props.data.value}</td>
+                        return <td tabIndex={this.props.id} onClick={(e)=>this.handleClick(e)} onKeyPress={(e)=>this.handleOverWrite(e)} onDoubleClick={(e)=>this.handleDClick(e)} id={this.props.id}>{this.props.data.value}</td>
                     }
                     else{
                         return (
-                            <td tabIndex={this.props.id} className='chosen-box' onClick={(e)=>this.handleClick(e)} id={this.props.id}
-                            onBlur={(e)=>this.handleBlur(e)} onKeyDown={(e)=>this.handleDelete(e)} onDoubleClick={(e)=>this.handleDClick(e)} onKeyPress={(e)=>this.handleOverWrite(e)}> 
+                            <td tabIndex={this.props.id} className='chosen-box' onClick={(e)=>this.handleClick(e)} id={this.props.id} onKeyDown={(e)=>this.handleDelete(e)} onDoubleClick={(e)=>this.handleDClick(e)} onKeyPress={(e)=>this.handleOverWrite(e)}> 
                                 {this.props.data.value}
                             </td>
                         )
@@ -69,12 +61,10 @@ export default class Cell extends Component{
         }
         else{
             if(this.props.data.value === 'none' || this.props.data.overwrite){
-                return <td className='chosen-box' id={this.props.id}><input tabIndex={this.props.id} autoFocus  onInput={(e)=>this.handleInput(e)} 
-                onBlur={(e)=>this.handleBlur(e)} onKeyPress={(e)=>this.handleSubmit(e)}></input></td>
+                return <td className='chosen-box' id={this.props.id}><input tabIndex={this.props.id} autoFocus  onInput={(e)=>this.handleInput(e)} onKeyPress={(e)=>this.handleSubmit(e)}></input></td>
             }
             else{
-                return <td className='chosen-box' id={this.props.id}><input tabIndex={this.props.id} autoFocus  value={this.props.data.value} onInput={(e)=>this.handleInput(e)} 
-                onBlur={(e)=>this.handleBlur(e)} onKeyPress={(e)=>this.handleSubmit(e)}></input></td>
+                return <td className='chosen-box' id={this.props.id}><input tabIndex={this.props.id} autoFocus  value={this.props.data.value} onInput={(e)=>this.handleInput(e)} onKeyPress={(e)=>this.handleSubmit(e)}></input></td>
             }
         }
     }   

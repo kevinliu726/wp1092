@@ -41,8 +41,8 @@
 }
 
 
-.gg-minus-r,
-.gg-add-r {
+.minus-r,
+.add-r {
     box-sizing: border-box;
     position: relative;
     display: inline-block;
@@ -55,16 +55,16 @@
     background-color: rgb(255, 255, 255);
 }
 
-.gg-add-r:active,
-.gg-minus-r:active {
+.add-r:active,
+.minus-r:active {
     outline: none;
     border: 2px solid;
     border-color: rgb(160, 160, 160);
     font-size: 12pt;
 }
 
-.gg-add-r:focus,
-.gg-minus-r:focus {
+.add-r:focus,
+.minus-r:focus {
     outline: none;
 }
 
