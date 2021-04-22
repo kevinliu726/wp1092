@@ -70,18 +70,6 @@ export default class Table extends Component{
     handleSubmit(e, rowid, colid){
         let data = this.state.data
         if(e.key === 'Enter'){
-            if(data[rowid-1][colid].value[0] === '='){
-                var eqa = this.solveEquation(data[rowid-1][colid].value)
-                if(eqa !== 'ERROR!' && Array.isArray(eqa)){
-                    eqa.push(rowid) 
-                    eqa.push(colid)
-                    this.state.equation.push(eqa)
-                }
-                else if(eqa === 'ERROR!')
-                    data[rowid-1][colid].value = "ERROR!"
-                else if(this.isNumeric(String(eqa)))
-                    data[rowid-1][colid].value = String(eqa)
-            }
             data[rowid-1][colid].editting = false
             var newrow = (rowid-1 < 99)? rowid+1:rowid 
             data[rowid-1][colid].chosen = false
@@ -89,7 +77,6 @@ export default class Table extends Component{
             this.setState({
                 data: data, 
                 crow: newrow,
-                equation: this.state.equation
             })
         }
     }
@@ -290,64 +277,6 @@ export default class Table extends Component{
         this.props.deBottom()
     }
 
-    updateTable() {
-        let deleteidx = []
-        for(var i = 0; i < this.state.equation.length; i++){
-            var equ = this.state.equation[i]
-            if(equ[5] === -1){
-                deleteidx.push(i)
-                continue
-            }
-            if(this.state.data[equ[5]-1][equ[6]].editting){
-                deleteidx.push(i)
-                continue
-            }
-            if(equ[0] !== -1 && equ[1] !== -1 && equ[2] === -1 && equ[3] === -1 && equ[4] === 4) {
-                // eslint-disable-next-line
-                this.state.data[equ[5]-1][equ[6]].value = this.state.data[equ[0]-1][equ[1]].value
-                continue
-            }
-            if(equ[0] === -1 || equ[1] === -1 || equ[2] === -1 || equ[3] === -1){
-                // eslint-disable-next-line
-                this.state.data[equ[5]-1][equ[6]].value = 'ERROR!'
-                deleteidx.push(i)
-                continue
-            }
-            var num1 = String(this.state.data[equ[0]-1][equ[1]].value)
-            var num2 = String(this.state.data[equ[2]-1][equ[3]].value)
-            if(!this.isNumeric(num1) || !this.isNumeric(num2)) {
-                // eslint-disable-next-line
-                this.state.data[equ[5]-1][equ[6]].value = 'ERROR!'
-            }
-            else{
-                if(equ[4] === 1) {
-                    // eslint-disable-next-line
-                    this.state.data[equ[5]-1][equ[6]].value = Number(num1)+Number(num2)
-                }
-                else if(equ[4] === 2) {
-                    // eslint-disable-next-line
-                    this.state.data[equ[5]-1][equ[6]].value = Number(num1)-Number(num2)
-                }
-                else if(equ[4] === 3){
-                    // eslint-disable-next-line
-                    this.state.data[equ[5]-1][equ[6]].value = 0
-                    for(var k = equ[0]-1; k < equ[2]; k++) {
-                        for(var j = equ[1]; j <= equ[3]; j++) {
-                            // eslint-disable-next-line
-                            this.state.data[equ[5]-1][equ[6]].value += Number(this.state.data[k][j].value)
-                        }
-                    }
-                    if(isNaN(this.state.data[equ[5]-1][equ[6]].value)) {
-                        // eslint-disable-next-line
-                        this.state.data[equ[5]-1][equ[6]].value = 'ERROR!'
-                    }
-                }
-            }
-        }
-        for(i = 0; i < deleteidx.length; i++){
-            this.state.equation.splice(deleteidx[i])
-        }
-    }
     NumtoLetter(number){
         var baseChar = ("A").charCodeAt(0), letters  = "";
         do {
@@ -380,176 +309,11 @@ export default class Table extends Component{
         return !isNaN(str) && !isNaN(parseFloat(str)) 
     }
 
-    solveEquation(equation){
-        let x = equation.replace(/\s/g, "");
-        x = x.slice(1)
-        if(x.slice(0,3) === 'Sum' || x.slice(0,3) === 'sum'){
-            if(x[3] !== '(')
-                return 'ERROR!'
-            var idx1 = x.slice(4).indexOf(':')
-            var idx2 = x.slice(4).indexOf(')')
-            if(idx1 === -1 || idx2 === -1)
-                return 'ERROR!'
-            if(idx2 !== x.slice(4).length-1)
-                return 'ERROR!'
-            var num1 = x.slice(4).slice(0,idx1)
-            var num2 = x.slice(4).slice(idx1+1,idx2)
-            var numidx = -1;
-            for(var i = 0; i < num1.length; i++){
-                if(!this.isLetter(num1[i])){
-                    numidx = i 
-                    break
-                }
-            }
-            if(numidx === 0 || numidx === -1)
-                return 'ERROR!'
-            var cidx1 = this.LettertoNumber(num1.slice(0,numidx).toUpperCase())
-            var ridx1 = Number(num1.slice(numidx))
-            numidx = -1;
-            for(i = 0; i < num2.length; i++){
-                if(!this.isLetter(num2[i])){
-                    numidx = i 
-                    break
-                }
-            }
-            if(numidx === 0 || numidx === -1)
-                return 'ERROR!'
-            var cidx2 = this.LettertoNumber(num2.slice(0,numidx).toUpperCase())
-            var ridx2 = Number(num2.slice(numidx))
-            if(ridx1 > ridx2 || cidx1 > cidx2)
-                return 'ERROR!'
-            if(ridx1 > this.state.crow || ridx2 > this.state.crow || cidx1 > this.state.ccol || cidx2 > this.state.ccol)
-                return 'ERROR!'
-            if(ridx1 <= 0 || ridx2 <= 0 || cidx1 < 0 || cidx2 < 0)
-                return 'ERROR!'
-            return [ridx1, cidx1, ridx2, cidx2, 3]
-        }
-        else{
-            if(x[0] === '('){
-                if(x[x.length-1] !== ')')
-                    return 'ERROR!'
-                idx1 = x.indexOf('+')
-                idx2 = x.indexOf('-')
-                if((idx1 !== -1 && idx2 !== -1) || (idx1 === -1 && idx2 === -1))
-                    return 'ERROR!'
-                if(idx1 !== -1){
-                    num1 = x.slice(1,idx1)
-                    num2 = x.slice(idx1+1,x.length-1)
-                }
-                else if(idx2 !== -1){
-                    num1 = x.slice(1,idx2)
-                    num2 = x.slice(idx2+1,x.length-1)
-                }
-                if(this.isNumeric(num1) && this.isNumeric(num2))
-                    return Number(num1)+Number(num2)
-                numidx = -1;
-                for(i = 0; i < num1.length; i++){
-                    if(!this.isLetter(num1[i])){
-                        numidx = i 
-                        break
-                    }
-                }
-                if(numidx === 0 || numidx === -1)
-                    return 'ERROR!'
-                cidx1 = this.LettertoNumber(num1.slice(0,numidx).toUpperCase())
-                ridx1 = Number(num1.slice(numidx))
-                numidx = -1;
-                for(i = 0; i < num2.length; i++){
-                    if(!this.isLetter(num2[i])){
-                        numidx = i 
-                        break
-                    }
-                }
-                if(numidx === 0 || numidx === -1)
-                    return 'ERROR!'
-                cidx2 = this.LettertoNumber(num2.slice(0,numidx).toUpperCase())
-                ridx2 = Number(num2.slice(numidx))
-                if(ridx1 > this.state.crow || ridx2 > this.state.crow || cidx1 > this.state.ccol || cidx2 > this.state.ccol)
-                    return 'ERROR!'
-                if(ridx1 <= 0 || ridx2 <= 0 || cidx1 < 0 || cidx2 < 0)
-                    return 'ERROR!'
-                if(idx1 !== -1)
-                    return [ridx1, cidx1, ridx2, cidx2, 1]
-                else 
-                    return [ridx1, cidx1, ridx2, cidx2, 2]
-            }
-            else{
-                idx1 = x.indexOf('+')
-                idx2 = x.indexOf('-')
-                if(idx1 !== -1 && idx2 !== -1) {
-                    return 'ERROR!'
-                }
-                else if ((idx1 !== -1 && idx2 === -1) || (idx1 === -1 && idx2 !== -1)){
-                    if(idx1 !== -1){
-                        num1 = x.slice(0,idx1)
-                        num2 = x.slice(idx1+1)
-                    }
-                    else{
-                        num1 = x.slice(0,idx2)
-                        num2 = x.slice(idx2+1)
-                    }
-                    if(this.isNumeric(num1) && this.isNumeric(num2))
-                        return Number(num1)+Number(num2)
-                    numidx = -1;
-                    for(i = 0; i < num1.length; i++){
-                        if(!this.isLetter(num1[i])){
-                            numidx = i 
-                            break
-                        }
-                    }
-                    if(numidx === 0 || numidx === -1)
-                        return 'ERROR!'
-                    cidx1 = this.LettertoNumber(num1.slice(0,numidx).toUpperCase())
-                    ridx1 = Number(num1.slice(numidx))
-                    numidx = -1;
-                    for(i = 0; i < num2.length; i++){
-                        if(!this.isLetter(num2[i])){
-                            numidx = i 
-                            break
-                        }
-                    }
-                    if(numidx === 0 || numidx === -1)
-                        return 'ERROR!'
-                    cidx2 = this.LettertoNumber(num2.slice(0,numidx).toUpperCase())
-                    ridx2 = Number(num2.slice(numidx))
-                    if(ridx1 > this.state.crow || ridx2 > this.state.crow || cidx1 > this.state.ccol || cidx2 > this.state.ccol)
-                        return 'ERROR!'
-                    if(ridx1 <= 0 || ridx2 <= 0 || cidx1 < 0 || cidx2 < 0)
-                        return 'ERROR!'
-                    if(idx1 !== -1)
-                        return [ridx1, cidx1, ridx2, cidx2, 1]
-                    else 
-                        return [ridx1, cidx1, ridx2, cidx2, 2]
-                }
-                else {
-                    if(this.isNumeric(x))
-                        return Number(x)
-                    numidx = -1;
-                    for(i = 0; i < x.length; i++){
-                        if(!this.isLetter(x[i])){
-                            numidx = i 
-                            break
-                        }
-                    }
-                    if(numidx === 0 || numidx === -1)
-                        return 'ERROR!'
-                    cidx1 = this.LettertoNumber(x.slice(0,numidx).toUpperCase())
-                    ridx1 = Number(x.slice(numidx))
-                    if(ridx1 > this.state.crow || cidx1 > this.state.ccol)
-                        return 'ERROR!'
-                    if(ridx1 <= 0 || cidx1 < 0)
-                        return 'ERROR!'
-                    return [ridx1, cidx1, -1, -1, 4]
-                }
-            }
-        }
-    }
-
     render(){
         let alpha = new Array(this.state.numcol-1).fill()
         for(var i = 0; i < alpha.length; i++)
             alpha[i] = this.NumtoLetter(i+1)
-        this.updateTable()
+
         return(
             <div className='table-main'>
                 <tr>
