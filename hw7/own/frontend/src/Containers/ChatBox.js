@@ -1,6 +1,4 @@
 import { useEffect, useRef } from "react";
-import { Tag, Typography } from "antd";
-const { Text } = Typography;
 const ChatBox = ({ me, chatKey, chatLog }) => {
   const messagesEndRef = useRef(null);
   useEffect(() => {

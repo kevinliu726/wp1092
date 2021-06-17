@@ -17,10 +17,7 @@ const ChatModal = ({ visible, onCreate, onCancel, displayStatus }) => {
             onCreate(values);
           })
           .catch((e) => {
-            displayStatus({
-              type: "error",
-              msg: "Please enter name.",
-            });
+            window.alert(e);
           });
       }}
     >

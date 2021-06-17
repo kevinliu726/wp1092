@@ -56,14 +56,14 @@ const useChatBox = () => {
   };
 
   const createChatBox = (server, me, friend) => {
-    server.sendEvent({
-      type: "CHAT",
-      data: { to: friend, name: me },
-    });
     const newKey = me <= friend ? `${me}_${friend}` : `${friend}_${me}`;
     if (chatBoxes.some(({ key }) => key === newKey)) {
       throw new Error(friend + "'s chat box has already opened.");
     }
+    server.sendEvent({
+      type: "CHAT",
+      data: { to: friend, name: me },
+    });
     return newKey;
   };
   return { chatBoxes, createChatBox, removeChatBox, onEvent };

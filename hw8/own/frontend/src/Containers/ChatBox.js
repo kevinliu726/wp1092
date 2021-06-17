@@ -11,20 +11,24 @@ const ChatBox = ({ me, chatKey }) => {
   });
 
   useEffect(() => {
-    subscribeToMore({
-      document: CHATBOX_SUBSCRIPTION,
-      variables: { name: chatKey },
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-        const newMessage = subscriptionData.data.chatbox.data; //m.sender //m.body
+    try {
+      subscribeToMore({
+        document: CHATBOX_SUBSCRIPTION,
+        variables: { name: chatKey },
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data) return prev;
+          const newMessage = subscriptionData.data.chatbox.data; //m.sender //m.body
 
-        return Object.assign({}, prev, {
-          queryChatBox: {
-            messages: [...prev.queryChatBox.messages, newMessage],
-          },
-        });
-      },
-    });
+          return Object.assign({}, prev, {
+            queryChatBox: {
+              messages: [...prev.queryChatBox.messages, newMessage],
+            },
+          });
+        },
+      });
+    } catch (error) {
+      console.log("error in Containers/ChatBox.js:", error);
+    }
   }, [subscribeToMore, chatKey]);
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

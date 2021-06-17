@@ -53,8 +53,13 @@ const ChatRoom = ({ me, displayStatus }) => {
                 name2: name,
               },
             });
-            setActiveKey(createChatBox(me, name));
-            setModalVisible(false);
+            try {
+              const activeKey = createChatBox(me, name);
+              setActiveKey(activeKey);
+              setModalVisible(false);
+            } catch (e) {
+              window.alert(e);
+            }
           }}
           onCancel={() => {
             setModalVisible(false);

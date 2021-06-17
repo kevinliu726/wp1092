@@ -157,11 +157,6 @@ wss.on("connection", function connection(client) {
         });
       }
     }
-
-    // disconnected
-    client.once("close", () => {
-      chatBoxes[client.box].delete(client);
-    });
   });
 });
 
