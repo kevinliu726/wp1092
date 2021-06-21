@@ -1,10 +1,10 @@
 {
-  "name": "chatroom_test",
+  "name": "hw8",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "scripts": {
+  "scripts":{
     "start": "cd frontend && yarn start",
-    "server": "cd backend && yarn dev"
+    "server": "cd backend && yarn server"
   }
 }

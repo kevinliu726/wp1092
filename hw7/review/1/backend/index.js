@@ -1,13 +1,11 @@
-const mongoose = require('mongoose');
-const http = require('http');
-const WebSocket = require('ws');
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const uuid = require('uuid');
+import mongoose from 'mongoose'
+import http from 'http'
+import WebSocket from 'ws'
+import express from 'express'
+import path from 'path'
+import {v4} from 'uuid'
 
-// require('dotenv-defaults').config();
-const mongo = require('./mongo');
+import mongo from './mongo.js'
 
 const app = express();
 
@@ -18,11 +16,11 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema({
   name: { type: String, required: true },
-  // chatBoxes: [{ type: mongoose.Types.ObjectId, ref: 'ChatBox' }],
+  chatBoxes: [{ type: mongoose.Types.ObjectId, ref: 'ChatBox' }],
 });
 
 const messageSchema = new Schema({
-  // chatBox: { type: mongoose.Types.ObjectId, ref: 'ChatBox' },
+  chatBox: { type: mongoose.Types.ObjectId, ref: 'ChatBox' },
   sender: { type: mongoose.Types.ObjectId, ref: 'User' },
   body: { type: String, required: true },
 });
@@ -33,16 +31,9 @@ const chatBoxSchema = new Schema({
   messages: [{ type: mongoose.Types.ObjectId, ref: 'Message' }],
 });
 
-const userChatBoxesCache = new Schema({
-  name: { type: String, required: true },
-  friends: [{ type: String }],
-  activeKey: { type: String }
-});
-
 const UserModel = mongoose.model('User', userSchema);
 const ChatBoxModel = mongoose.model('ChatBox', chatBoxSchema);
 const MessageModel = mongoose.model('Message', messageSchema);
-const UserChatBoxesCacheModel = mongoose.model('UserChatBoxesCache', userChatBoxesCache);
 
 /* -------------------------------------------------------------------------- */
 /*                                  UTILITIES                                 */
@@ -59,58 +50,8 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({
   server,
 });
-
+const __dirname = path.resolve(path.dirname(''));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors());
-app.use(express.json());
-app.get('/last', async function (req, res) {
-  try {
-    const name = req.query.name;
-    const doc = await UserChatBoxesCacheModel.findOne({ name });
-    
-    console.log(doc)
-    if (!doc) {
-      res.send({
-        data: {
-          friends: [],
-          activeKey: "",
-        },})
-    } else {
-      console.log("doc.friends: "+doc.friends)
-      console.log("doc.activeKey: "+doc.activeKey)
-      res.send({
-        friends: doc.friends,
-        activeKey: doc.activeKey,
-      })
-    }
-    
-  } catch (e) {
-    console.log(e)
-    res.json({ message: 'Something went wrong...'+e });
-  }
-});
-app.post('/last', async function (req, res) {
-  try {
-    const name = req.body.name;
-    const friends = req.body.friends;
-    const activeKey = req.body.activeKey;
-
-    const query = { name };
-    const update = { friends, activeKey };
-    const options = { upsert: true, new: true, setDefaultsOnInsert: true };
-    const obj = await UserChatBoxesCacheModel.findOneAndUpdate(query, update, options);
-    console.log("########################")
-    console.log(name)
-    console.log(friends)
-    console.log(activeKey)
-    console.log(obj)
-    console.log("########################")
-    res.send({message:"Saved cur state"})
-  } catch (e) {
-    console.log(e)
-    res.json({ message: 'Something went wrong...'+e });
-  }
-});
 
 const validateUser = async (name) => {
   const existing = await UserModel.findOne({ name });
@@ -127,10 +68,23 @@ const validateChatBox = async (name, participants) => {
     .execPopulate();
 };
 
+// (async () => {
+//   const a = await validateUser('a');
+//   const b = await validateUser('b');
+
+//   console.log(a);
+
+//   const cbName = makeName('a', 'b');
+
+//   const chatBox = await validateChatBox(cbName, [a, b]);
+
+//   console.log(chatBox);
+// })();
+
 const chatBoxes = {}; // keep track of all open AND active chat boxes
 
 wss.on('connection', function connection(client) {
-  client.id = uuid.v4();
+  client.id = v4();
   client.box = ''; // keep track of client's CURRENT chat box
 
   client.sendEvent = (e) => client.send(JSON.stringify(e));
@@ -192,7 +146,7 @@ wss.on('connection', function connection(client) {
 
         chatBox.messages.push(newMessage);
         await chatBox.save();
-        
+
         chatBoxes[chatBoxName].forEach((client) => {
           client.sendEvent({
             type: 'MESSAGE',
@@ -204,66 +158,12 @@ wss.on('connection', function connection(client) {
             },
           });
         });
-
-        break;
       }
-
-      case 'CLEAR_MESSAGES': {
-        MessageModel.deleteMany({}, () => {
-          for (const [key, value] of Object.entries(chatBoxes)) {
-            chatBoxes[key].forEach((client) => {
-              client.sendEvent({
-                type: 'CLEAR_MESSAGES',
-                data: {},
-              });
-            });
-          }
-        })
-        break;
-      }
-
-      // case 'SAVE_CHATBOXES' : {
-      //   const {
-      //     data: { name, friends, activeKey },
-      //   } = message;
-        
-      //   const query = { name };
-      //   const update = { friends, activeKey };
-      //   const options = { upsert: true, new: true, setDefaultsOnInsert: true };
-      //   const res = await UserChatBoxesCacheModel.findOneAndUpdate(query, update, options);
-        
-      //   client.sendEvent({
-      //     type: 'SAVE_CHATBOXES',
-      //     data: {
-      //       messages: "saved current chatboxes!",
-      //       obj: res
-      //     },
-      //   });
-      // }
-
-      // case 'GET_CHATBOXES' : {
-      //   const {
-      //     data: { name },
-      //   } = message;
-      //   const doc = await UserChatBoxesCacheModel.findOne({ name });
-      //   if (doc) {
-      //     client.sendEvent({
-      //       type: 'GET_CHATBOXES',
-      //       data: {
-      //         friends: doc.friends,
-      //         activeKey: doc.activeKey,
-      //       },
-      //     });
-      //   }
-        
-      // }
     }
 
     // disconnected
     client.once('close', () => {
-      if (chatBoxes[client.box]) {
-        chatBoxes[client.box].delete(client);
-      }
+      chatBoxes[client.box].delete(client);
     });
   });
 });

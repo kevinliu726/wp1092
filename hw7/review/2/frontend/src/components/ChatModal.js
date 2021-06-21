@@ -1,7 +1,6 @@
 import { Modal, Form, Input } from "antd";
 
-const ChatModal = ({ visible, onCreate, 
-  onCancel }) => {
+const ChatModal = ({ visible, onCreate, onCancel, displayStatus }) => {
   const [form] = Form.useForm();
   return (
     <Modal
@@ -10,12 +9,23 @@ const ChatModal = ({ visible, onCreate,
       okText="Create" cancelText="Cancel"
       onCancel={onCancel}
       onOk={() => {
-        form.validateFields().then((values) => {
-          form.resetFields();
-          onCreate(values);
-        }).catch((e) => { window.alert(e); });
-    }}>
-     <Form form={form} layout="vertical" 
+        form.validateFields()
+          .then((values) => {
+            form.resetFields();
+            onCreate(values);
+          })
+          .catch((e) => { 
+            if(e.values.name === '' || e.values.name === undefined)
+              displayStatus({
+                type: "error",
+                msg: "Please enter the name of the person to chat.",
+              })
+            else
+              window.alert(e); 
+          });
+      }}
+    >
+      <Form form={form} layout="vertical" 
         name="form_in_modal">
         <Form.Item
           name="name" label="Name"
