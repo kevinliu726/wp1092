@@ -1,0 +1,86 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 500px;
+  margin: auto;
+}
+
+.App-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.App-title h1 {
+  margin: 0;
+  margin-right: 20px;
+  font-size: 3em;
+}
+
+.App-messages {
+  width: 100%;
+  height: 300px;
+  background: #eeeeee52;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 20px;
+  overflow:hidden;
+}
+
+.App-message{
+  width: 100%;
+  height: 210px;
+  position: relative;
+  overflow: auto;
+}
+
+.bubbleWrapper {
+  width: 100%;
+	padding: 5px 0px;
+	display: flex;
+	justify-content: flex-end;
+	flex-direction: column;
+	align-self: flex-end;
+}
+.inlineContainer {
+  display: inline-flex;
+}
+.inlineContainer.own {
+  flex-direction: row-reverse;
+}
+
+.name{
+  height: 100%;
+}
+
+.name.own{
+  padding-left: 5px;
+}
+
+.name.other{
+  padding-right: 5px;
+}
+
+.ownBubble {
+	max-width: 90%;
+	background-color: #76c1f3;
+  overflow-wrap: break-word;
+  white-space:pre-wrap;
+}
+.otherBubble {
+	max-width: 90%;
+	background-color: #80f8ae;
+  overflow-wrap: break-word;
+  white-space:pre-wrap;
+}
+
+.own {
+	align-self: flex-end;
+}
+
+.other {
+	align-self: flex-start;
+}
