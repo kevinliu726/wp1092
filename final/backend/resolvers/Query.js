@@ -13,6 +13,15 @@ const Query = {
     if (exist) return exist.password === password;
     else return false;
   },
+  async getName(parent, {id}, {db}, info){
+    const user = await db.UserModel.findOne({_id: id});
+    if(user) return user.name;
+    else return "fff";
+  },
+  async getID(parent, {name}, {db}, info){
+    const user = await db.UserModel.findOne({name});
+    return user._id;
+  },
   async getLobby(parent, args, context, info) {
     const { roomType } = args;
     const { rooms } = context;

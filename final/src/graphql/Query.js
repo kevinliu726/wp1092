@@ -12,6 +12,18 @@ const NAME_EXIST = gql`
   }
 `;
 
+const GET_NAME = gql`
+  query($id: ID){
+    getName(id: $id)
+  }
+`;
+
+const GET_ID = gql`
+  query($name: String){
+    getID(name: $name)
+  }
+`
+
 const GET_LOBBY = gql`
   query ($roomType: String) {
     getLobby(roomType: $roomType) {
@@ -105,4 +117,4 @@ const GET_BATTLE_HISTORY = gql`
     }
   }
 `;
-export { LOG_IN, NAME_EXIST, GET_LOBBY, GET_ROOM, GET_ROOM_HISTORY, GET_BATTLE_HISTORY };
+export { LOG_IN, GET_NAME, GET_ID, NAME_EXIST, GET_LOBBY, GET_ROOM, GET_ROOM_HISTORY, GET_BATTLE_HISTORY };

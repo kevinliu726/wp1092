@@ -1,6 +1,8 @@
 type Query {
     nameExist(name: String): Boolean
     isLogIn(name: String, password: String): Boolean
+    getName(id: ID): String
+    getID(name: String): String
     getLobby(roomType: String): [Room]
     getRoom(roomID: ID): Room
     getRoomHistory(name: String): [RoomHistory]

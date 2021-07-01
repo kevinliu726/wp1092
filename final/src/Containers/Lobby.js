@@ -10,7 +10,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Divider from "@material-ui/core/Divider";
 import { Button } from "@material-ui/core";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_LOBBY } from "../graphql/Query";
+import { GET_LOBBY, GET_ID } from "../graphql/Query";
 import { SUBSCRIBE_LOBBY } from "../graphql/Subscription";
 import { CREATE_ROOM } from "../graphql/Mutation";
 import { Redirect, useHistory, useLocation } from "react-router";
@@ -46,19 +46,23 @@ const Lobby = ({
   const [roomList, setRoomList] = useState([]);
   const [correctPassword, setCorrectPassword] = useState("");
   const [searchName, setSearchName] = useState("");
+  const [userID, setUserID] = useState(null);
   const location = useLocation();
+  const {data: queryID} = useQuery(GET_ID, {variables: {name: username}, onCompleted: (q) => setUserID(q.getID)});
+
 
   const [createRoom] = useMutation(CREATE_ROOM, {
     onCompleted: (createRoomData) => {
       if (createRoomData && createRoomData.createRoom) {
-        window.location = `/Game/${room_type}/${createRoomData.createRoom.roomID}/${username}`;
+        window.location.state = "fff";
+        window.location = `/Game/${room_type}/${createRoomData.createRoom.roomID}/${userID}`;
         // history.push(`/Game/${room_type}/${createRoomData.createRoom.roomID}/${username}`, {loginName: username});
       }
     },
   });
   const { data, subscribeToMore } = useQuery(GET_LOBBY, { variables: { roomType: room_type } });
   useLayoutEffect(() => {
-    subscribeToMore({
+    const unsubscribe = subscribeToMore({
       document: SUBSCRIBE_LOBBY,
       variables: { roomType: room_type },
       updateQuery: (prev, { subscriptionData }) => {
@@ -66,7 +70,8 @@ const Lobby = ({
         return { ...prev, getLobby: [...subscriptionData.data.subscribeLobby] };
       },
     });
-  }, [subscribeToMore]);
+    return () => unsubscribe();
+  }, []);
   useLayoutEffect(() => {
     if (data) {
       setRoomList(data.getLobby);
@@ -95,7 +100,7 @@ const Lobby = ({
   };
   const handleEnter = () => {
     setOpenEnterPassword(false);
-    window.location = `/Game/${room_type}/${enterRoomID}/${username}`;
+    window.location = `/Game/${room_type}/${enterRoomID}/${userID}`;
     // history.push(`/Game/${room_type}/${enterRoomID}/${username}`, {loginName: username});
   };
 
@@ -109,7 +114,7 @@ const Lobby = ({
 
   const goToGame = (roomID, password) => {
     if (isPublic) {
-      window.location = `/Game/${room_type}/${roomID}/${username}`;
+      window.location = `/Game/${room_type}/${roomID}/${userID}`;
       // history.push(`/Game/${room_type}/${roomID}/${username}`, {loginName: username});
     } else {
       setEnterRoomID(roomID);
@@ -118,7 +123,7 @@ const Lobby = ({
     }
   };
   return (!location.state || location.state.loginName !== username) ? (
-    <Redirect to={{pathname: "/Login", state:{action: "illegal"}}}/>
+    <Redirect to={{pathname: "/Login", state:{action: "illegal", from: "lobby"}}}/>
   ) : (
     <div style={{ position: "relative" }}>
       <Button id="back_btn" onClick={() => goBackToMenu()}>

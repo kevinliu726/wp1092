@@ -12,8 +12,8 @@ import { FormHelperText } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useLayoutEffect, useState, useEffect } from "react";
 import { useBeforeunload } from "react-beforeunload";
-import { useQuery, useMutation } from "@apollo/client";
-import { GET_ROOM } from "../graphql/Query";
+import { useQuery, useMutation, useLazyQuery } from "@apollo/client";
+import { GET_ROOM, GET_NAME } from "../graphql/Query";
 import { SUBSCRIBE_ROOM } from "../graphql/Subscription";
 import { useLocation, useHistory, Redirect } from "react-router";
 import {
@@ -34,7 +34,7 @@ import {
 
 const Game = ({
   match: {
-    params: { room_type, room_id, username },
+    params: { room_type, room_id, userID },
   },
   history,
 }) => {
@@ -83,8 +83,12 @@ const Game = ({
   const [betError, setBetError] = useState(false);
   const [players, setPlayers] = useState([]);
   const [myIndex, setMyIndex] = useState(-1);
+  const [username, setUsername] = useState(null);
   const location = useLocation();
   const { data, subscribeToMore } = useQuery(GET_ROOM, { variables: { roomID: room_id } });
+  const [queryName, {data: q}] = useLazyQuery(GET_NAME, {fetchPolicy: "network-only"});
+  // const [queryName, {data: q}] = useLazyQuery(GET_NAME, {variables: {id: userID}, onCompleted: (q) => {setUsername(q.getName); console.log("getQuery")}});
+  // const [getData, {data}] = useLazyQuery(GET_ROOM, {fetchPolicy: "network-only"});
   const [chooseSeat] = useMutation(CHOOSE_SEAT);
   const [hit] = useMutation(HIT);
   const [stand] = useMutation(STAND);
@@ -101,19 +105,17 @@ const Game = ({
 
   useBeforeunload((event) => {
     leave({ variables: { roomID: room_id, index: myIndex } });
-    // window.location.href = `/Lobby/${room_type}/${username}`;
     history.replace(`/Lobby/${room_type}/${username}`, { loginName: username });
+    console.log(location.pathname);
+    // window.location.href = `/Lobby/${room_type}/${username}`;
+    // history.replace(`/Lobby/${room_type}/${username}`, { loginName: username });
   });
+
   // useEffect(() => {
-  //   history.listen((newLocation, action) => {
-  //     if(action !== "PUSH"){
-  //       leave({ variables: { roomID: room_id, index: myIndex } });
-  //       // history.replace(`/Lobby/${room_type}/${username}`, {loginName: username});
-  //     }
-  //   })
-  // });
+  //   queryName({variables: {id: userID}, onCompleted: (q) => setUsername(q.getName)});
+  // }, [location])
   useEffect(() => {
-    subscribeToMore({
+    const unsubscribe = subscribeToMore({
       document: SUBSCRIBE_ROOM,
       variables: { roomID: room_id },
       updateQuery: (prev, { subscriptionData }) => {
@@ -121,7 +123,8 @@ const Game = ({
         return { ...prev, getRoom: subscriptionData.data.subscribeRoom };
       },
     });
-  }, [subscribeToMore]);
+    return () => unsubscribe();
+  }, []);
   useEffect(() => {
     if (data && data.getRoom) {
       let index = -1;
@@ -201,8 +204,9 @@ const Game = ({
       }
     }
   });
-  return false && (!location.state || location.state.loginName !== username) ? (
-    <Redirect to={{ pathname: "/Login", state: { action: "illegal" } }} />
+  
+  return (!username && username === "fff") || (data && data.getRoom === null) ? (
+    <Redirect to={{ pathname: "/Login", state: { action: "illegal", from: "game" } }} />
   ) : (
     <div className="game_container">
       {
