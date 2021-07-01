@@ -1,0 +1,47 @@
+type Query{
+    chatBox(userName:String!,friend:String!): ChatBox!
+    user(userName:String!): User!
+}
+
+type Mutation{
+    createChatBox(data: CreateChatBoxInput!): ChatBox!
+    createMessage(data: CreateMessageInput!): Message!
+    createUser(data: CreateUserInput!): User!
+}
+
+# type Subscription{
+    
+# }
+
+type ChatBox{
+    id:ID!
+    chatBoxName:String!
+    messages:[Message!]
+}
+
+type Message{
+    messageBody:String!
+    id:ID!
+    chatBoxName: String!
+}
+
+input CreateMessageInput{
+    messageBody: String!
+    sender: String!
+    receiver: String!
+}
+
+input CreateChatBoxInput{
+    userName: String!
+    friend: String!
+}
+
+input CreateUserInput{
+    userName:String!
+    id:ID!
+}
+
+type User{
+    userName: String!
+    id:ID!
+}

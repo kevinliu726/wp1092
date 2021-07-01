@@ -1,0 +1,71 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 500px;
+  margin: auto;
+}
+
+.App-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.App-title h1 {
+  margin: 0;
+  margin-right: 20px;
+  font-size: 3em;
+}
+
+.App-messages {
+  width: 100%;
+  height: 300px;
+  background: #eeeeee52;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 20px;
+  overflow: auto;
+}
+.my-message {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.others-message {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.message-text {
+  margin: 2px;
+  padding: 3px;
+  max-width: 220px;
+  overflow-wrap: break-word;
+  white-space: pre-line;
+
+  border-radius: 4px;
+  background-color: #c3c3c3;
+  overflow: visible;
+}
+
+.message-author {
+  margin: 2px;
+  padding: 3px;
+}
+
+.send-button {
+  margin: 5px;
+}
+
+.my-ant-tabs {
+  height: 100%;
+}
+
+.ant-tabs-content-holder {
+  overflow: auto;
+}
