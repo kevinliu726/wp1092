@@ -4,9 +4,10 @@
 台大資工四 B06902061 林采鋒
 
 ## Project Info
-Deployed連結：
-Demo影片連結：
-GitHub連結：
+## Project Info
+Deployed連結：https://blackjack-lk.herokuapp.com/
+Demo影片連結：https://youtu.be/d_yG5IhgKoI
+GitHub連結：https://github.com/kevinliu726/wp1092
 
 ## 介紹
 這次一個可以和朋友線上即時對戰的21點遊戲。
