@@ -1,0 +1,50 @@
+.page_container {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  min-width: 100vh;
+}
+.img_container {
+  display: flex;
+  width: 50%;
+  justify-content: center;
+  background: black;
+}
+.right_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10;
+  width: 50%;
+  background: radial-gradient(circle at center, #003300 0, black 70%);
+}
+.input_container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10%;
+}
+#login_btn,
+#register_btn {
+  margin-left: 8px;
+  margin-right: 8px;
+  background-color: #717171;
+  color: white;
+}
+
+#login_btn:hover,
+#register_btn:hover {
+  background-color: #d5d5d5;
+  color: white;
+}
+
+#join_btn,
+#back_to_login_btn {
+  background-color: transparent;
+  color: #888888;
+}
+#join_btn:hover,
+#back_to_login_btn:hover {
+  background-color: transparent;
+  color: #bbbbbb;
+}

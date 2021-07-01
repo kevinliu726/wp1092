@@ -1,0 +1,80 @@
+.menu {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  background: radial-gradient(circle at center, #003300 0, black 50%);
+}
+.middle_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 30%;
+  height: 100%;
+}
+.menu_logo {
+  margin-left: 3%;
+  width: 150%;
+  align-self: center;
+}
+.row_btn {
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+  flex-direction: row;
+  height: 8%;
+}
+#left_btn,
+#right_btn {
+  display: flex;
+  width: 20%;
+  height: 100%;
+  font-family: Georgia;
+  font-weight: Bold;
+  font-size: 20px;
+  margin-left: 8px;
+  margin-right: 8px;
+  background-color: transparent; /*transparent for menu button*/
+  color: white;
+}
+
+#left_btn:hover,
+#right_btn:hover {
+  background-color: #858484; /*#858484 for menu button hover*/
+  color: white;
+}
+#setting,
+#history,
+#rules {
+  display: flex;
+  margin-left: 8px;
+  margin-right: 8px;
+  width: 25%;
+  height: 100%;
+  align-self: center;
+  font-family: Georgia;
+  font-weight: Bold;
+  background-color: transparent;
+  color: white;
+}
+#logout {
+  display: flex;
+  margin-top: 8%;
+  margin-bottom: 3%;
+  height: 8%;
+  width: 20%;
+  align-self: center;
+  font-family: Georgia;
+  font-weight: Bold;
+  background-color: transparent;
+  color: white;
+}
+#setting:hover,
+#history:hover,
+#rules:hover,
+#logout:hover {
+  background-color: #858484; /*#858484 for menu button hover*/
+  color: white;
+}

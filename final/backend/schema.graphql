@@ -1,0 +1,102 @@
+type Query {
+    nameExist(name: String): Boolean
+    isLogIn(name: String, password: String): Boolean
+    getLobby(roomType: String): [Room]
+    getRoom(roomID: ID): Room
+    getRoomHistory(name: String): [RoomHistory]
+    getBattleHistory(name: String, roomID: ID): [BattleHistory]
+}
+
+type Mutation {
+    register(name: String, password: String): Boolean
+    setPassword(name: String, password: String): Boolean
+    createRoom(roomInfo: CreateRoomInfo): Room
+    startGame(roomID: ID): Room
+    endGame(roomID: ID): Room
+    chooseSeat(roomID: ID, name: String, index: Int, originalIndex: Int): Int
+    setBet(roomID: ID, bet: Float, index: Int): Room
+    dealCards(roomID: ID): Room
+    hit(roomID: ID, index: Int): Room
+    stand(roomID: ID, index: Int): Room
+    chooseBattlePlayer(roomID: ID, index: Int): Room
+    battle(roomID: ID): Room
+    battleAll(roomID: ID): Room
+    away(roomID: ID, index: Int): Room
+    back(roomID: ID, index: Int): Room
+    leave(roomID: ID, index: Int): Room
+}
+
+
+type Subscription {
+    subscribeLobby(roomType: String): [Room]
+    subscribeRoom(roomID: ID): Room
+}
+
+type Room {
+    roomID: ID
+    roomInfo: RoomInfo
+    players: [Player]
+    deck: [Int]
+    state: String
+}
+
+input CreateRoomInfo{
+    roomType: String
+    password: String
+    name: String
+    host: String
+    decksNumber: Int
+    minBet: Float
+    maxBet: Float
+}
+
+type RoomInfo {
+    roomType: String
+    password: String
+    name: String
+    host: String
+    decksNumber: Int
+    playersNumber: Int
+    minBet: Float
+    maxBet: Float
+}
+
+type Player {
+    name: String
+    index: Int
+    state: String
+    isBank: Boolean
+    canBattle: Boolean
+    canBet: Boolean
+    canStand: Boolean
+    canHit: Boolean
+    cash: Float
+    isChosen: Boolean
+    bet: Float
+    cards: [Card]
+    resultTimes: Int
+}
+
+type Card {
+    visible: Boolean
+    number: Int
+}
+
+type RoomHistory {
+    roomID: ID
+    roomInfo: RoomInfo
+    date: String
+}
+
+type BattleHistory {
+    roomID: ID
+    bet: Float,
+    resultTimes: Int,
+    bank: BattleInfo
+    player: BattleInfo
+}
+
+type BattleInfo {
+    name: String,
+    cards: [Card]
+}

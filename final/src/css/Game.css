@@ -1,0 +1,212 @@
+.game_container {
+  display: flex;
+  flex-direction: row;
+  background: radial-gradient(circle, #000000, #191819, #2a292a);
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+.player {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  min-width: 100px;
+  min-height: 50px;
+}
+.dealer {
+  top: 30%;
+  left: 37%;
+  width: 27%;
+  height: 19.75%;
+}
+.player_1 {
+  top: 2%;
+  left: 51%;
+  width: 18%;
+  height: 15%;
+}
+.player_2 {
+  top: 12%;
+  left: 71%;
+  width: 18%;
+  height: 15%;
+}
+.player_3 {
+  top: 30%;
+  left: 77%;
+  width: 18%;
+  height: 15%;
+}
+.player_4 {
+  top: 49%;
+  left: 77%;
+  width: 18%;
+  height: 15%;
+  /* background: rgb(189, 99, 3);
+  box-shadow: 0 0 30px rgb(189, 99, 3); */
+}
+.player_5 {
+  top: 66%;
+  left: 61%;
+  width: 18%;
+  height: 15%;
+  /* border-color: goldenrod;
+  box-shadow: 0 0 30px goldenrod; */
+}
+.player_6 {
+  top: 75%;
+  left: 41%;
+  width: 18%;
+  height: 15%;
+}
+.player_7 {
+  top: 66%;
+  right: 61%;
+  width: 18%;
+  height: 15%;
+}
+.player_8 {
+  top: 49%;
+  right: 77%;
+  width: 18%;
+  height: 15%;
+}
+.player_9 {
+  top: 30%;
+  right: 77%;
+  width: 18%;
+  height: 15%;
+}
+.player_10 {
+  top: 12%;
+  right: 71%;
+  width: 18%;
+  height: 15%;
+}
+.player_11 {
+  top: 2%;
+  right: 51%;
+  width: 18%;
+  height: 15%;
+}
+.top_btn_container {
+  display: flex;
+  position: absolute;
+  top: 1%;
+  left: 1%;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 5%;
+  height: 20%;
+}
+.go_btn {
+  display: flex;
+  width: 90%;
+  height: 25%;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  font-size: 14px;
+  font-family: Georgia;
+  font-weight: bold;
+  background: black;
+  opacity: 0.8;
+}
+.go_btn:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+#leave_btn {
+  border: solid;
+  border-color: crimson;
+  border-width: 2px;
+  color: crimson;
+}
+#away_btn {
+  border: solid;
+  border-color: white;
+  border-width: 2px;
+  color: white;
+}
+.btm_btn_container {
+  display: flex;
+  position: absolute;
+  bottom: 1%;
+  right: 1%;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 30%;
+  height: 13%;
+}
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 23%;
+  height: 90%;
+  border-radius: 20px;
+  font-size: x-large;
+  font-family: Georgia;
+  font-weight: bold;
+  color: white;
+  border: solid;
+  border-color: white;
+  border-width: 2px;
+  background: black;
+  opacity: 0.8;
+}
+.btn:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+#bet_btn {
+  border-color: goldenrod;
+  color: goldenrod;
+}
+#hit_btn {
+  border-color: goldenrod;
+  color: goldenrod;
+}
+#start_btn {
+  border-color: goldenrod;
+  color: goldenrod;
+  font-size: 21px;
+}
+#end_btn {
+  border-color: white;
+  color: white;
+}
+#catch_btn {
+  border-color: white;
+  color: white;
+  font-size: 21px;
+}
+#stand_btn {
+  border-color: white;
+  color: white;
+  font-size: 21px;
+}
+.UNSEATED {
+  display: flex;
+  background: transparent;
+  border: dashed;
+  border-radius: 15px;
+  border-width: 2px;
+  border-color: rgb(80, 79, 79);
+  color: rgb(80, 79, 79);
+}
+
+.UNSEATED:hover {
+  cursor: pointer;
+  border-color: rgb(178, 181, 181);
+  color: rgb(178, 181, 181);
+}
+.table_img {
+  width: 80%;
+  height: 70%;
+  object-fit: cover;
+  margin-bottom: 5%;
+}

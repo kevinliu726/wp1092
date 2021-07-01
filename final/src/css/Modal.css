@@ -1,0 +1,7 @@
+.deck_container {
+  border: solid;
+  border-color: #03a9f4;
+  border-width: 1.5px;
+  border-radius: 5px;
+  margin: 8px;
+}
