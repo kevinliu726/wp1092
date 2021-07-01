@@ -34,7 +34,7 @@ import {
 
 const Game = ({
   match: {
-    params: { room_type, room_id, userID },
+    params: { room_type, room_id, username },
   },
   history,
 }) => {
@@ -83,12 +83,8 @@ const Game = ({
   const [betError, setBetError] = useState(false);
   const [players, setPlayers] = useState([]);
   const [myIndex, setMyIndex] = useState(-1);
-  const [username, setUsername] = useState(null);
   const location = useLocation();
   const { data, subscribeToMore } = useQuery(GET_ROOM, { variables: { roomID: room_id } });
-  const [queryName, {data: q}] = useLazyQuery(GET_NAME, {fetchPolicy: "network-only"});
-  // const [queryName, {data: q}] = useLazyQuery(GET_NAME, {variables: {id: userID}, onCompleted: (q) => {setUsername(q.getName); console.log("getQuery")}});
-  // const [getData, {data}] = useLazyQuery(GET_ROOM, {fetchPolicy: "network-only"});
   const [chooseSeat] = useMutation(CHOOSE_SEAT);
   const [hit] = useMutation(HIT);
   const [stand] = useMutation(STAND);
@@ -111,9 +107,7 @@ const Game = ({
     // history.replace(`/Lobby/${room_type}/${username}`, { loginName: username });
   });
 
-  // useEffect(() => {
-  //   queryName({variables: {id: userID}, onCompleted: (q) => setUsername(q.getName)});
-  // }, [location])
+
   useEffect(() => {
     const unsubscribe = subscribeToMore({
       document: SUBSCRIBE_ROOM,
@@ -205,7 +199,7 @@ const Game = ({
     }
   });
   
-  return (!username && username === "fff") || (data && data.getRoom === null) ? (
+  return false ? (
     <Redirect to={{ pathname: "/Login", state: { action: "illegal", from: "game" } }} />
   ) : (
     <div className="game_container">

@@ -19,7 +19,7 @@ function App() {
         <Route path="/Register" exact component={Register} />
         <Route path="/Menu/:username" exact component={Menu} />
         <Route path="/Lobby/:room_type/:username" exact component={Lobby} />
-        <Route path="/Game/:room_type/:room_id/:userID" exact component={Game} />
+        <Route path="/Game/:room_type/:room_id/:username" exact component={Game} />
       </Switch>
     </Router>
   );

@@ -46,16 +46,13 @@ const Lobby = ({
   const [roomList, setRoomList] = useState([]);
   const [correctPassword, setCorrectPassword] = useState("");
   const [searchName, setSearchName] = useState("");
-  const [userID, setUserID] = useState(null);
   const location = useLocation();
-  const {data: queryID} = useQuery(GET_ID, {variables: {name: username}, onCompleted: (q) => setUserID(q.getID)});
 
 
   const [createRoom] = useMutation(CREATE_ROOM, {
     onCompleted: (createRoomData) => {
       if (createRoomData && createRoomData.createRoom) {
-        window.location.state = "fff";
-        window.location = `/Game/${room_type}/${createRoomData.createRoom.roomID}/${userID}`;
+        window.location = `/Game/${room_type}/${createRoomData.createRoom.roomID}/${username}`;
         // history.push(`/Game/${room_type}/${createRoomData.createRoom.roomID}/${username}`, {loginName: username});
       }
     },
@@ -100,7 +97,7 @@ const Lobby = ({
   };
   const handleEnter = () => {
     setOpenEnterPassword(false);
-    window.location = `/Game/${room_type}/${enterRoomID}/${userID}`;
+    window.location = `/Game/${room_type}/${enterRoomID}/${username}`;
     // history.push(`/Game/${room_type}/${enterRoomID}/${username}`, {loginName: username});
   };
 
@@ -114,7 +111,7 @@ const Lobby = ({
 
   const goToGame = (roomID, password) => {
     if (isPublic) {
-      window.location = `/Game/${room_type}/${roomID}/${userID}`;
+      window.location = `/Game/${room_type}/${roomID}/${username}`;
       // history.push(`/Game/${room_type}/${roomID}/${username}`, {loginName: username});
     } else {
       setEnterRoomID(roomID);
